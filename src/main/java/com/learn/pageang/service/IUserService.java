@@ -1,13 +1,14 @@
-package service;
+package com.learn.pageang.service;
 
-import model.User;
+import com.learn.pageang.model.User;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 
 public interface IUserService {
 
-    Page<User> findAll(Pageable pageable);
+    Page<User> findAll(PageRequest pageRequest);
 
     User saveOrUpdate(User user);
 

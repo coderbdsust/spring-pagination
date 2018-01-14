@@ -1,18 +1,19 @@
-package controller;
+package com.learn.pageang.controller;
 
-import model.User;
+import com.learn.pageang.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-import service.IUserService;
-import service.UserService;
+import com.learn.pageang.service.IUserService;
+import com.learn.pageang.service.UserService;
 
 @RestController(value = "/users")
 public class UserController {
@@ -25,26 +26,29 @@ public class UserController {
         this.userService=userService;
     }
 
-    @GetMapping(value = {"","/"})
-    public ResponseEntity getUsers(@PageableDefault Pageable pageable){
-        return ResponseEntity.ok().body(userService.findAll(pageable));
+    @GetMapping(value = "")
+    public ResponseEntity getUsers(@PageableDefault Pageable page){
+        Page<User> pageData=userService.findAll(new PageRequest(page.getPageNumber(),page.getPageSize(),page.getSort()));
+        return ResponseEntity.ok().body(pageData);
     }
 
-    @GetMapping(value = "{id}")
-    public ResponseEntity getUser(@PathVariable Long id){
-        return ResponseEntity.ok().body(userService.findById(id));
-    }
 
-    @PostMapping(value = {"","/"})
+
+    @PostMapping(value = "")
     public ResponseEntity save(User user){
         User saveUser=this.userService.saveOrUpdate(user);
         return ResponseEntity.ok().body(saveUser);
     }
 
-    @PostMapping(value = "{id}")
-    public ResponseEntity delete(@PathVariable Long id){
+    @GetMapping(value = "/{id}")
+    public ResponseEntity getUser(@PathVariable(name = "id") Long id){
+        return ResponseEntity.ok().body(userService.findById(id));
+    }
+
+    @PostMapping(value = "/{id}")
+    public ResponseEntity delete(@PathVariable() Long id){
         this.userService.delete(id);
-        return ResponseEntity.ok().body(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

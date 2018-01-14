@@ -1,6 +1,6 @@
-package repository;
+package com.learn.pageang.repository;
 
-import model.User;
+import com.learn.pageang.model.User;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 import javax.transaction.Transactional;
