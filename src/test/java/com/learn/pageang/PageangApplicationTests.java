@@ -16,6 +16,4 @@ public class PageangApplicationTests {
 	public void contextLoads() {
 	}
 
-
-
 }

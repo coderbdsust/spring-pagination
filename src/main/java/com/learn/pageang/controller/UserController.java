@@ -8,14 +8,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.learn.pageang.service.IUserService;
 import com.learn.pageang.service.UserService;
 
-@RestController(value = "/users")
+import javax.ws.rs.Produces;
+
+@RestController
+@RequestMapping("/users")
 public class UserController {
 
     IUserService userService;
@@ -26,7 +26,7 @@ public class UserController {
         this.userService=userService;
     }
 
-    @GetMapping(value = "")
+    @GetMapping()
     public ResponseEntity getUsers(@PageableDefault Pageable page){
         Page<User> pageData=userService.findAll(new PageRequest(page.getPageNumber(),page.getPageSize(),page.getSort()));
         return ResponseEntity.ok().body(pageData);

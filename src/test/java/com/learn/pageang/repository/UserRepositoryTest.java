@@ -18,9 +18,6 @@ import java.util.List;
 @ActiveProfiles("test")
 public class UserRepositoryTest {
 
-    @Autowired
-    UserRepository userRepository;
-
     public UserRepositoryTest(){
         System.out.println("AddressRepositoryTest");
     }
