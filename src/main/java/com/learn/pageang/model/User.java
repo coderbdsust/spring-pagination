@@ -43,7 +43,7 @@ public class User {
 
     @OneToMany(mappedBy = "userId", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnore
-    private Collection<Address> addressesById=new ArrayList<>();
+    private Collection<Address> addressesById;
 
     public Long getId() {
         return id;
@@ -131,6 +131,20 @@ public class User {
 
     public void setAddressesById(Collection<Address> addressesById) {
         this.addressesById = addressesById;
+    }
+
+
+    @PostLoad
+    private void postLoad(){
+        for (Address a : getAddressesById()) {
+            if (a.getAddressType() == Enums.AddressType.PRESENT.getValue()) {
+                setPresentAddress(a);
+            } else if (a.getAddressType() == Enums.AddressType.PERMANENT.getValue()) {
+                setPermanentAddress(a);
+            } else if (a.getAddressType() == Enums.AddressType.OFFICIAL.getValue()) {
+                setOfficialAddress(a);
+            }
+        }
     }
 
 }

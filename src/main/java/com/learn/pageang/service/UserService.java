@@ -36,8 +36,7 @@ public class UserService implements IUserService {
 
     @Override
     public Page<User> findAll(PageRequest pageRequest) {
-        return addressFormulate(userRepository.findAll(pageRequest));
-//        return userRepository.findAll(pageRequest);
+        return userRepository.findAll(pageRequest);
     }
 
     @Override
@@ -68,20 +67,4 @@ public class UserService implements IUserService {
         return this.userRepository.findOne(userId);
     }
 
-    private Page<User> addressFormulate(Page<User> users){
-        for(User user:users.getContent()){
-            if(!user.getAddressesById().isEmpty()) {
-                for (Address a : user.getAddressesById()) {
-                    if (a.getAddressType() == Enums.AddressType.PRESENT.getValue()) {
-                        user.setPresentAddress(a);
-                    } else if (a.getAddressType() == Enums.AddressType.PERMANENT.getValue()) {
-                        user.setPermanentAddress(a);
-                    } else if (a.getAddressType() == Enums.AddressType.OFFICIAL.getValue()) {
-                        user.setOfficialAddress(a);
-                    }
-                }
-            }
-        }
-        return users;
-    }
 }
