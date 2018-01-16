@@ -1,12 +1,12 @@
 package com.learn.pageang.service;
 
+import com.learn.pageang.constant.Enums;
 import com.learn.pageang.model.Address;
 import com.learn.pageang.model.User;
 import com.learn.pageang.repository.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import com.learn.pageang.repository.UserRepository;
@@ -35,18 +35,19 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Page<User> findAll(PageRequest pageable) {
-        return userRepository.findAll(pageable);
+    public Page<User> findAll(PageRequest pageRequest) {
+        return addressFormulate(userRepository.findAll(pageRequest));
+//        return userRepository.findAll(pageRequest);
     }
 
     @Override
     @Transactional
     public User saveOrUpdate(User user) {
         User saveUser=userRepository.save(user);
-        Address homeAddress = addressRepository.save(saveUser.getHomeAddress());
+        Address presentAddress = addressRepository.save(saveUser.getPresentAddress());
         Address permanentAddress= addressRepository.save(saveUser.getPermanentAddress());
         Address officialAddress=addressRepository.save(saveUser.getOfficialAddress());
-        saveUser.setHomeAddress(homeAddress);
+        saveUser.setPresentAddress(presentAddress);
         saveUser.setPermanentAddress(permanentAddress);
         saveUser.setOfficialAddress(officialAddress);
         return saveUser;
@@ -65,5 +66,22 @@ public class UserService implements IUserService {
     @Override
     public User findById(Long userId) {
         return this.userRepository.findOne(userId);
+    }
+
+    private Page<User> addressFormulate(Page<User> users){
+        for(User user:users.getContent()){
+            if(!user.getAddressesById().isEmpty()) {
+                for (Address a : user.getAddressesById()) {
+                    if (a.getAddressType() == Enums.AddressType.PRESENT.getValue()) {
+                        user.setPresentAddress(a);
+                    } else if (a.getAddressType() == Enums.AddressType.PERMANENT.getValue()) {
+                        user.setPermanentAddress(a);
+                    } else if (a.getAddressType() == Enums.AddressType.OFFICIAL.getValue()) {
+                        user.setOfficialAddress(a);
+                    }
+                }
+            }
+        }
+        return users;
     }
 }

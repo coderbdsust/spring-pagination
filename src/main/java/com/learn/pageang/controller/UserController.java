@@ -26,7 +26,7 @@ public class UserController {
         this.userService=userService;
     }
 
-    @GetMapping()
+    @GetMapping("")
     public ResponseEntity getUsers(@PageableDefault Pageable page){
         Page<User> pageData=userService.findAll(new PageRequest(page.getPageNumber(),page.getPageSize(),page.getSort()));
         return ResponseEntity.ok().body(pageData);

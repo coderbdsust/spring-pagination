@@ -1,5 +1,6 @@
 package com.learn.pageang.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ public class Address {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
+    @JsonIgnore
     private User userId;
     private String houseNo;
     private String roadNo;

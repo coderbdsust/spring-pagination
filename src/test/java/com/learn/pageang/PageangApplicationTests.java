@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
-@TestPropertySource(locations="classpath:application-test.properties")
+//@TestPropertySource(locations={"classpath:application.properties","classpath:application-test.properties"})
 public class PageangApplicationTests {
 
 	@Test

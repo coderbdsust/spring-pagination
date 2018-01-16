@@ -37,6 +37,5 @@ dependencies {
 	compile "org.modelmapper:modelmapper:0.7.5"
 	compile "javax.ws.rs:javax.ws.rs-api:2.0.1"
 	compile "org.springframework.data:spring-data-rest-webmvc:2.5.5.RELEASE"
-	compile("org.springframework.boot:spring-boot-starter-actuator")
 
 }

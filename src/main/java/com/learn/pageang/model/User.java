@@ -1,9 +1,12 @@
 package com.learn.pageang.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.learn.pageang.constant.Enums;
 import lombok.Data;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -21,7 +24,7 @@ public class User {
     private String designation;
 
     @Transient
-    private Address homeAddress;
+    private Address presentAddress;
 
     @Transient
     private Address permanentAddress;
@@ -38,9 +41,9 @@ public class User {
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date updated;
 
-    @OneToMany(mappedBy = "userId", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "userId", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnore
-    private Collection<Address> addressesById;
+    private Collection<Address> addressesById=new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -74,12 +77,12 @@ public class User {
         this.designation = designation;
     }
 
-    public Address getHomeAddress() {
-        return homeAddress;
+    public Address getPresentAddress() {
+        return presentAddress;
     }
 
-    public void setHomeAddress(Address homeAddress) {
-        this.homeAddress = homeAddress;
+    public void setPresentAddress(Address presentAddress) {
+        this.presentAddress = presentAddress;
     }
 
     public Address getPermanentAddress() {
@@ -129,4 +132,5 @@ public class User {
     public void setAddressesById(Collection<Address> addressesById) {
         this.addressesById = addressesById;
     }
+
 }
