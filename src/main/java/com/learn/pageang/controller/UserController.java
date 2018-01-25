@@ -10,12 +10,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.learn.pageang.service.IUserService;
 import com.learn.pageang.service.UserService;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Produces;
 
 @RestController
@@ -45,6 +49,13 @@ public class UserController {
         return ResponseEntity.ok().body(userResource);
     }
 
+    @PutMapping(value = "/{id}")
+    public ResponseEntity update(@PathVariable Long id, @Validated User user){
+        User saveUser=this.userService.saveOrUpdate(user);
+        UserResource userResource=userAssembler.toResource(saveUser);
+        return ResponseEntity.ok().body(userResource);
+    }
+
     @GetMapping(value = "/{id}")
     public ResponseEntity getUser(@PathVariable(name = "id") Long id){
         User user=userService.findById(id);
@@ -52,7 +63,7 @@ public class UserController {
         return ResponseEntity.ok().body(userResource);
     }
 
-    @PostMapping(value = "/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity delete(@PathVariable() Long id){
         this.userService.delete(id);
         return ResponseEntity.noContent().build();
